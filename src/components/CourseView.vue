@@ -42,7 +42,7 @@
 		)
 
 		let unit = getDuration(morning, props.course.start)
-		let multiplier = isMobileViewport.value ? 0 : 64
+		let multiplier = isMobileViewport.value ? 0 : 80
 
 		marginTop.value = unit * multiplier
 	}
