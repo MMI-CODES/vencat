@@ -63,3 +63,6 @@ export async function loadWeek(group_id: string, startDate: Date) {
 		return [[], [], [], [], [], [], []];
 	}
 }
+
+import { ref } from 'vue';
+export const focusedCourse = ref<Course | null>(null);

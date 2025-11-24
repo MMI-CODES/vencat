@@ -3,6 +3,7 @@
 
 	import type { Course } from 'celcat';
 	import { toFormatHHMM, getDuration, colors, emojis } from '@/scripts/utils';
+	import { focusedCourse } from '@/scripts/timetable';
 
 	const props = defineProps<{
 		course: Course,
@@ -115,7 +116,7 @@
 			</div>
 		</div>
 
-		<div v-else class="cursor-pointer flex text-white rounded-[20px] w-full overflow-hidden" :style="{ backgroundColor: color, height: size + 'px' }">
+		<div v-else class="cursor-pointer flex text-white rounded-[20px] w-full overflow-hidden" :style="{ backgroundColor: color, height: size + 'px' }" v-on:click="focusedCourse = course">
 			<div class="bg-slate-950/10 w-4 h-full overflow-hidden">
 				<div
 					v-for="(item, idx) in getDuration(course.start, course.end) * 10"

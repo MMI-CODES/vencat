@@ -1,14 +1,15 @@
 <script setup lang="ts">
 	import CourseView from '@/components/CourseView.vue';
+	import CourseFocus from '@/components/layout/CourseFocus.vue';
 
 	import FastBackward from '@/components/icons/FastBackward.vue';
 	import FastForward from '@/components/icons/FastForward.vue';
 
-	import { ref, computed, onMounted, watch } from 'vue';
+	import { ref, onMounted, watch } from 'vue';
 
 	import type { Course } from 'celcat';
 
-	import { loadWeek } from '@/scripts/timetable';
+	import { loadWeek, focusedCourse } from '@/scripts/timetable';
 
 
 	const isMobileViewport = ref<boolean>(false);
@@ -105,6 +106,8 @@
 	}
 </script>
 <template>
+	<CourseFocus v-if="focusedCourse" :course="focusedCourse" />
+
 	<header class="p-8 space-y-6 max-sm:space-y-4">
 		<div class="flex items-center justify-center gap-2">
 			<img src="@/assets/logo.svg" class="block w-10 h-10 max-sm:w-5 max-sm:h-5" /> <h1 class="select-none text-4xl font-bold max-sm:text-xl">BetterCelcat</h1>
