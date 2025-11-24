@@ -6,15 +6,11 @@ import { getDuration } from "./utils";
 const tt = new Timetable()
 
 export async function loadWeek(group_id: string, startDate: Date) {
-	console.log("Loading week from", startDate)
-
 	try {
 		const weekStart = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + 1 - startDate.getDay());
 		const weekEnd = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + 7 - startDate.getDay());
 
-		console.log(weekStart.toISOString(), weekEnd.toISOString())
 		const courses: Course[] = await tt.getTimetable(group_id, weekStart, weekEnd);
-		console.log(courses.length)
 
 		const tempDays: Course[][] = [[], [], [], [], [], [], []];
 
