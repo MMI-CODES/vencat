@@ -1,13 +1,17 @@
 <script setup lang="ts">
-	import { ref, onMounted, watch } from 'vue';
+	import { ref, onMounted } from 'vue';
 
 	import type { Course } from 'celcat';
-	import { toFormatHHMM, getDuration, colors, emojis } from '@/scripts/utils';
-import { focusedCourse } from '@/scripts/timetable';
+	import type { Module } from '@/scripts/utils';
+
+	import { toFormatHHMM, getDuration, colors, modules } from '@/scripts/utils';
+	import { focusedCourse } from '@/scripts/timetable';
 
 	const props = defineProps<{
 		course: Course,
 	}>();
+
+	const module: Module = modules[props.course.module] || { title: props.course.module, emoji: '', short: props.course.module, description: '', coeff: 0 };
 
 	const isMobileViewport = ref<boolean>(false);
 
@@ -18,14 +22,6 @@ import { focusedCourse } from '@/scripts/timetable';
 			color.value = colors[props.course.type]!
 		} else {
 			color.value = '#D29130'
-		}
-	}
-
-	const calcEmoji = () => {
-		if (Object.keys(emojis).includes(props.course.module)) {
-			return emojis[props.course.module]!
-		} else {
-			return ''
 		}
 	}
 
@@ -42,27 +38,34 @@ import { focusedCourse } from '@/scripts/timetable';
 	});
 </script>
 <template>
-	<section class="select-none fixed top-0 z-500 bg-slate-300/40 backdrop-blur-md w-screen h-screen p-4 dark:bg-slate-950/40 md:flex md:flex-col md:items-center md:justify-center">
-		<div class="bg-white font-medium rounded-2xl shadow-2xl p-6 space-y-4 md:rounded-3xl md:min-w-1/2 md:p-8 lg:min-w-1/3 dark:bg-slate-900">
+	<section class="select-none fixed top-0 z-500 bg-slate-300/60 backdrop-blur-md w-screen h-screen dark:bg-slate-950/60 md:flex md:flex-col md:items-center md:justify-center">
+		<div class="bg-white font-medium shadow-2xl p-6 space-y-4 md:rounded-3xl md:min-w-1/2 md:p-8 lg:min-w-1/3 dark:bg-slate-900">
 			<div class="flex items-center gap-2">
 				<div class="flex items-center justify-center bg-slate-950/5 text-2xl rounded-full w-13 h-13 dark:bg-white/5">
-					{{ calcEmoji()  }}
+					{{ module.emoji  }}
 				</div>
 				<div v-if="course.type == 'Réunion'" class="flex flex-col justify-center">
-					<h2 class="text-lg font-bold">{{ course.summary }}</h2>
+					<h2 class="text-lg font-bold">{{ isMobileViewport ? module.short : course.summary }}</h2>
 				</div>
 				<div v-else class="flex flex-col justify-center">
-					<h2 class="text-lg font-bold -mt-1 -mb-1.5">{{ course.summary }}</h2>
+					<h2 class="text-lg font-bold -mt-1 -mb-1.5">{{ isMobileViewport ? module.short : course.summary }}</h2>
 					<span class="text-white/50 text-sm font-medium" :style="{ color: color }">{{ course.type }} - {{ course.module }}</span>
 				</div>
+			</div>
+			<div>
+				<p v-if="isMobileViewport"><span class="font-bold">Matière:</span> {{ course.summary }}</p>
 			</div>
 			<div>
 				<p><span class="font-bold">Début:</span> {{ toFormatHHMM(new Date(course.start)) }}</p>
 				<p><span class="font-bold">Fin:</span> {{ toFormatHHMM(new Date(course.end)) }}</p>
 			</div>
-			<div>
-				<p class="max-w-lg"><span class="font-bold">Lieu:</span> {{ course.location || 'Inconnu' }}</p>
-				<p class="max-w-lg"><span class="font-bold">Intervenant(s):</span> {{ course.teachers.join(', ') || "Inconnu" }}</p>
+			<div class="max-w-lg">
+				<p><span class="font-bold">Lieu:</span> {{ course.location || 'Inconnu' }}</p>
+				<p><span class="font-bold">Intervenant(s):</span> {{ course.teachers.join(', ') || "Inconnu" }}</p>
+			</div>
+			<div class="max-w-lg">
+				<p class="font-bold">Description:</p>
+				<p>{{ module.description }}</p>
 			</div>
 			<button class="cursor-pointer block text-white text-sm font-bold rounded-full w-fit px-5 py-3 mx-auto" v-on:click="focusedCourse = null" :style="{ backgroundColor: color }">Fermer</button>
 		</div>

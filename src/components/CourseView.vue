@@ -2,13 +2,17 @@
 	import { ref, onMounted, watch } from 'vue';
 
 	import type { Course } from 'celcat';
-	import { toFormatHHMM, getDuration, colors, emojis } from '@/scripts/utils';
+	import type { Module } from '@/scripts/utils';
+
+	import { toFormatHHMM, getDuration, colors, modules } from '@/scripts/utils';
 	import { focusedCourse } from '@/scripts/timetable';
 
 	const props = defineProps<{
 		course: Course,
 		index: number
 	}>();
+
+	const module: Module = modules[props.course.module] || { title: props.course.module, emoji: '', short: props.course.module, description: '', coeff: 0 };
 
 	const isMobileViewport = ref<boolean>(false);
 
@@ -60,14 +64,6 @@
 		}
 	}
 
-	const calcEmoji = () => {
-		if (Object.keys(emojis).includes(props.course.module)) {
-			return emojis[props.course.module]!
-		} else {
-			return ''
-		}
-	}
-
 	onMounted(() => {
 		const mediaQuery = window.matchMedia('(max-width: 720px)');
 		isMobileViewport.value = mediaQuery.matches;
@@ -109,8 +105,8 @@
 			</div>
 			<div class="flex-1 py-2 pl-1 pr-4">
 				<div class="flex items-center gap-1 h-full">
-					<div class="text-2xl">{{ calcEmoji() }}</div>
-					<h3 class="grow font-black line-clamp-1">{{ course.summary }}</h3>
+					<div class="text-2xl">{{ module.emoji }}</div>
+					<h3 class="grow font-black line-clamp-1">{{ module.short }}</h3>
 					<span class="text-sm font-semibold line-clamp-1">{{ toFormatHHMM(new Date(course.start)) }} - {{ toFormatHHMM(new Date(course.end)) }}</span>
 				</div>
 			</div>
@@ -128,11 +124,11 @@
 			<div class="flex-1 p-2 pr-4">
 				<div class="flex items-center gap-2">
 					<span class="bg-slate-950/5 text-xs font-semibold truncate rounded-lg max-w-16 px-2 py-1">{{ course.location.split('-')[0]!.trim() || "Salle Inconnue" }}</span>
-					<span class="flex-1 text-xs text-center font-semibold py-1">{{ calcEmoji() }} {{ course.module }}</span>
+					<span class="flex-1 text-xs text-center font-semibold py-1">{{ module.emoji }} {{ course.module }}</span>
 					<span class="text-sm font-semibold line-clamp-1">{{ toFormatHHMM(new Date(course.start)) }} - {{ toFormatHHMM(new Date(course.end)) }}</span>
 				</div>
 				<div class="pl-1">
-					<h3 class="font-black line-clamp-1">{{ course.summary }}</h3>
+					<h3 class="font-black line-clamp-1">{{ module.short }}</h3>
 					<span v-if="getDuration(course.start, course.end) >= 1.5 || isMobileViewport" class="text-sm font-semibold line-clamp-1">{{ course.teachers.join(', ') }}</span>
 				</div>
 			</div>

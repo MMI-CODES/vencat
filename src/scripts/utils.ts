@@ -17,35 +17,41 @@ export const colors: Record<string, string> = {
 	'Projet Tutoré': '#5349D7'
 }
 
-export const emojis: Record<string, string> = {
-	'R 1.01': '🇬🇧', // Anglais
-	'R 1.02': '🇬🇧', // Anglais aussi (?)
-	'R 1.03': '🚹', // Ergo/Accessibilité
-	'R 1.04': '🌐', // Culture numérique
-	'R 1.05': '📢', // Stratégies de communication
-	'R 1.06': '🗣️', // Expression & Communication
-	'R 1.07': '📝', // Écriture Multimédia et Narration
-	'R 1.08': '✒️', // Graphisme
-	'R 1.09': '🖼️', // Culture artistique
-	'R 1.10': '🎥', // Audiovisuel
-	'R 1.11': '⌨️', // Integration
-	'R 1.12': '💻', // Dev Web
-	'R 1.13': '🚀', // Hébergement
-	'R 1.14': '🔣', // Représentation et Traitement Informatique
-	'R 1.15': '🧠', // Gestion de Projet
-	'R 1.16': '📜', // Économie & Droit
-	'R 1.17': '💼', // Projet Personnel Professionel
+export interface Module {
+	title: string;
+	emoji: string;
+	short: string;
+	description: string;
+	coeff: number
+}
 
-	/* Les 3 lettres du supplice */
-	'SAE 1.01': '', // Y'en a pas
-	'SAE 1.02': '📊', // Recommandation Numérique
-	'SAE 1.03': '✒️', // Design Graphique
-	'SAE 1.04': '🎥', // Audiovisuel
-	'SAE 1.05': '💻', // Conception d'un Site Web
-	'SAE 1.06': '🧠', // Gestion de Projet et Recommandation
+export const modules: Record<string, Module> = {
+	'R 1.01':   { title: 'Anglais',                                   emoji: '🇬🇧', short: 'Anglais', description: 'Cours d\'anglais pour améliorer vos compétences linguistiques.', coeff: 1 },
+	'R 1.02':   { title: 'Anglais',                                   emoji: '🇬🇧', short: 'Anglais', description: 'Cours d\'anglais pour améliorer vos compétences linguistiques.', coeff: 1 },
+	'R 1.03':   { title: 'Ergonomie et Accessibilité',                emoji: '🚹', short: 'Ergo. & Accessibilité', description: 'Apprenez les principes de l\'ergonomie et de l\'accessibilité dans le design numérique.', coeff: 3 },
+	'R 1.04':   { title: 'Culture Numérique',                         emoji: '🌐', short: 'Cult. Numérique', description: 'Explorez l\'impact de la culture numérique sur la société moderne.', coeff: 3 },
+	'R 1.05':   { title: 'Stratégies de Communication',               emoji: '📢', short: 'Strat. Communication', description: 'Développez des stratégies efficaces de communication dans divers contextes.', coeff: 2 },
+	'R 1.06':   { title: 'Expression & Communication',                emoji: '🗣️', short: 'Expr. Communication', description: 'Améliorez vos compétences en expression orale et écrite.', coeff: 2 },
+	'R 1.07':   { title: 'Écriture Multimédia et Narration',          emoji: '📝', short: 'Écriture & Narr.', description: 'Apprenez à créer des contenus narratifs pour les médias numériques.', coeff: 3 },
+	'R 1.08':   { title: 'Graphisme',                                 emoji: '✒️', short: 'Graphisme', description: 'Découvrez les bases du design graphique et de la création visuelle.', coeff: 4 },
+	'R 1.09':   { title: 'Culture Artistique',                        emoji: '🖼️', short: 'Cult. Artistique', description: 'Explorez l\'histoire et les mouvements de l\'art à travers les âges.', coeff: 2 },
+	'R 1.10':   { title: 'Audiovisuel',                               emoji: '🎥', short: 'Audiovisuel', description: 'Apprenez les techniques de production audiovisuelle.', coeff: 4 },
+	'R 1.11':   { title: 'Intégration',                               emoji: '⌨️', short: 'Intégration', description: 'Intégrez des maquettes en pages web fidèles, structurées et compatibles avec les standards du web.', coeff: 5 },
+	'R 1.12':   { title: 'Développement Web',                         emoji: '💻', short: 'Dev. Web', description: 'Développez des fonctionnalités interactives et dynamiques pour donner vie à vos interfaces.', coeff: 4 },
+	'R 1.13':   { title: 'Hébergement',                               emoji: '🚀', short: 'Hébergement', description: 'Mettez vos projets en ligne en configurant des solutions d’hébergement fiables et performantes.', coeff: 3 },
+	'R 1.14':   { title: 'Représentation et Traitement Informatique', emoji: '🔣', short: 'Repr. & Trait. Info', description: 'Comprenez et manipulez les données numériques pour mieux les représenter, les structurer et les exploiter.', coeff: 3 },
+	'R 1.15':   { title: 'Gestion de Projet',                         emoji: '🧠', short: 'Gestion de Projet', description: 'Apprenez à organiser, planifier et piloter efficacement un projet numérique en équipe.', coeff: 2 },
+	'R 1.16':   { title: 'Économie & Droit',                          emoji: '📜', short: 'Économie & Droit', description: 'Découvrez les bases juridiques et économiques liées au secteur du numérique et à ses acteurs.', coeff: 1.5 },
+	'R 1.17':   { title: 'Projet Personnel Professionnel',            emoji: '💼', short: 'Projet Perso. Pro.', description: 'Identifiez vos objectifs professionnels et construisez progressivement votre parcours de formation.', coeff: .5 },
 
-	/* Autres */
-	'lunch': '🍽️', // Pause dej
-	'Réunion': '🗓️', // Réunion
-	'Portfolio': '💼' // Portfolio
+	'Portfolio': { title: 'Portfolio',                                emoji: '💼', short: 'Portfolio', description: 'Présentez vos compétences à travers un projet complet, structuré et argumenté, reflétant votre progression et votre savoir-faire.', coeff: 1 }, // Coeff. inconnu
+
+	'SAE 1.02': { title: 'Recommandation Numérique',                  emoji: '📊', short: 'Recomm. Numérique', description: 'Analysez des besoins et proposez des solutions numériques adaptées à un contexte donné.', coeff: 6 },
+	'SAE 1.03': { title: 'Design Graphique',                          emoji: '✒️', short: 'Design Graphique', description: 'Concevez des visuels cohérents et esthétiques en appliquant les principes fondamentaux du design.', coeff: 6 },
+	'SAE 1.04': { title: 'Audiovisuel',                               emoji: '🎥', short: 'Audiovisuel', description: 'Réalisez des contenus audiovisuels en maîtrisant la prise de vue, le montage et la narration visuelle.', coeff: 6 },
+	'SAE 1.05': { title: 'Site Web',                                  emoji: '💻', short: 'Site Web', description: 'Créez un site web complet en combinant conception graphique, intégration et développement.', coeff: 12 },
+	'SAE 1.06': { title: 'Gestion de Projet & Recommandation',        emoji: '🧠', short: 'Gest. Projet & Recomm.', description: 'Menez un projet de bout en bout en produisant une recommandation argumentée et structurée.', coeff: 10 },
+
+	'lunch': { title: 'Déjeûner',  emoji: '🍽️', short: 'Déjeûner', description: 'Savourez un repas 5 étoiles ou un plateau du CROUS', coeff: 0 },
+	'Réunion': { title: 'Réunion', emoji: '🧠', short: 'Réunion', description: '', coeff: 0 },
 }
