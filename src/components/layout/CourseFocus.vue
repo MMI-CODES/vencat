@@ -53,7 +53,7 @@
 					<h2 class="text-lg font-bold -mt-1 -mb-1.5">{{ isMobileViewport ? module.short : course.summary }}</h2>
 					<span class="text-white/50 text-sm font-semibold" :style="{ color: color }">{{ course.type }} - {{ course.module }}</span>
 				</div>
-				<div class="cursor-pointer flex items-center gap-1 bg-slate-950/5 text-white text-sm font-semibold rounded-full p-1.5 duration-300 dark:bg-white/5 hover:scale-105" v-on:click="focusedCourse = null"><CrossIcon className="stroke-white/50 stroke-3 w-3.5 h-3.5" /></div>
+				<div class="cursor-pointer flex items-center gap-1 bg-red-500 text-white text-sm font-semibold rounded-full p-1.5 duration-300 dark:bg-white/5 hover:scale-105" v-on:click="focusedCourse = null"><CrossIcon className="stroke-white stroke-3 w-3.5 h-3.5 dark:stroke-white/50" /></div>
 			</div>
 			<div>
 				<p v-if="isMobileViewport"><span class="font-bold">Matière:</span> {{ course.summary }}</p>
