@@ -6,6 +6,7 @@
 	import PinIcon from '../icons/PinIcon.vue';
 	import PeopleIcon from '../icons/PeopleIcon.vue';
 	import InfoIcon from '../icons/InfoIcon.vue';
+	import ExtLinkIcon from '../icons/ExtLinkIcon.vue';
 
 	import type { Course } from 'celcat';
 	import type { Module } from '@/scripts/utils';
@@ -83,6 +84,15 @@
 				</div>
 				<div class="max-w-lg">
 					<p>{{ module.description }}</p>
+				</div>
+			</div>
+
+			<div class="flex">
+				<div class="shrink-0 flex items-center w-6">
+					<ExtLinkIcon :color="color[3] || '#000000'" class="w-5 h-5" />
+				</div>
+				<div class="text-sm max-w-lg -translate-y-0.5" :style="{ color: color[3] }">
+					<a :href="'https://plan-up.pages.dev?module=' + course.module" class="underline-offset-[1.5px] decoration-[1.5px] hover:underline">Consulter les devoirs pour ce module</a>
 				</div>
 			</div>
 		</div>
