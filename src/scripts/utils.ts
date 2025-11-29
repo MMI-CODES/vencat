@@ -9,13 +9,27 @@ export const toFormatHHMM = (date: Date): string => {
     return `${hours}:${minutes}`;
 }
 
-export const colors: Record<string, string> = {
-	'DS': '#FF48F3',
-	'TD': '#2E8DB6',
-	'TP': '#622FB5',
-	'CM': '#E14864',
-	'Projet Tutoré': '#5349D7'
+export const colors: Record<string, string[]> = {
+	// SAMPLE             VERY DARK     DARKER       DARK         ORIGINAL     LIGHT         PASTEL      VERY LIGHT
+	'DS':             ['#0F0F1A', '#990099', '#CC00CC', '#FF48F3', '#FF99F7', '#FFB3F7', '#FFE6FF'],
+	'TD':             ['#0A1117', '#0F3A52', '#1D5A7A', '#2E8DB6', '#6FB5D9', '#A8D9E8', '#D9EFF5'],
+	'TP':             ['#0B061A', '#2C1451', '#461F73', '#622FB5', '#9B6FD1', '#D4B5E8', '#EDD9F7'],
+	'CM':             ['#1A0609', '#6B1420', '#A01C38', '#E14864', '#EE7A94', '#F5B3C7', '#FDD4DC'],
+	'Projet Tutoré':  ['#080640', '#1A0B7A', '#352FA8', '#5349D7', '#9B8FE3', '#D4C7F0', '#E8E0F7'],
+	'Réunion':        ['#2B1A00', '#8B4C00', '#B86600', '#D29130', '#E5B565', '#F0D4A8', '#F9E8D6'],
+	'pause':          ['#050810', '#0E1820', '#1C2C3E', '#314158', '#6B8FA5', '#A8C7D9', '#D9E8F0'],
+	'finished':       ['#050810', '#0E1820', '#1C2C3E', '#314158', '#6B8FA5', '#A8C7D9', '#D9E8F0'],
+	'unknown':        ['#050810', '#0E1820', '#1C2C3E', '#314158', '#6B8FA5', '#A8C7D9', '#D9E8F0']
 }
+
+export const toOriginal = (key: string): string => {
+	return colors[key]?.[3] || '#000000';
+}
+
+export const toPastel = (key: string): string => {
+	return colors[key]?.[5] || '#FFFFFF';
+}
+
 
 export interface Module {
 	title: string;

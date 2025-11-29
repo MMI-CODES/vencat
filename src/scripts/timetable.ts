@@ -40,7 +40,7 @@ export async function loadWeek(group_id: string, startDate: Date) {
 			let duration = lastCourse ? getDuration(lastCourse.end, course.start) : 0
 			let isLunch = duration > 0 && (lastCourse.end.getHours() >= 11 && course.start.getHours() <= 14)
 
-			if (duration > 0 && lastCourse.end.getDate() == course.start.getDate()) {
+			if (duration > .25 && lastCourse.end.getDate() == course.start.getDate()) {
 				tempDays[dayIndex]!.push({
 					uid: '',
 					type: isLunch ? 'lunch' : 'pause',
