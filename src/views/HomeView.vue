@@ -82,10 +82,6 @@
 		days.value = await loadWeek(group_id.value, day.value)
 	})
 
-	watch(promo_id, async () => {
-		console.log(promo_id.value)
-	})
-
 
 	async function fwd() {
 		offset.value += 1
@@ -173,12 +169,12 @@
 		</div>
 	</header>
 	<main class="flex px-4 pb-4 gap-2 md:p-8">
-		<section v-for="(item, index) in viewport" :key="index + offset" class="flex-1 flex flex-col">
+		<section v-for="(item, index) in viewport" :key="group_id + '-' + index + '-' + offset" class="flex-1 flex flex-col">
 			<div class="text-xl text-center mb-8 -space-y-1 max-sm:mb-4">
 				<p class="font-bold">{{ weekdays[index + offset] }}</p>
 				<p v-if="!isSameWeek(sectionDate(index))" class="text-sm font-semibold opacity-50">{{ sectionDate(index).getFullYear() == 2026 ? toFormatJJMoisAAAA(sectionDate(index)).full : toFormatJJMoisAAAA(sectionDate(index)).month  }}</p>
 			</div>
-			<CourseView v-for="(course, idx) in (days[index + offset] || [])" :key="(course.uid || '') + '-' + (new Date(course.start)).getTime()" :course="course" :index="idx" />
+			<CourseView v-for="(course, idx) in (days[index + offset] || [])" :key="index + '-' + idx + '-' + (course.uid || '') + '-' + (new Date(course.start)).getTime()" :course="course" :index="idx" />
 		</section>
 	</main>
 </template>

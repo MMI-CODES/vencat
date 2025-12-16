@@ -23,11 +23,12 @@
 		if (maxScreen('xs')) {
 			if (props.course.type == 'pause') size.value = 0
 			else if (props.course.type == 'lunch') size.value = 64
-			else size.value = 112
+			else if (getDuration(props.course.start, props.course.end) >= 1.5) size.value = 112
+			else size.value = 96
 		} else {
 			let duration = getDuration(props.course.start, props.course.end)
 
-			if (duration >= 1.5) size.value = 80 * getDuration(props.course.start, props.course.end) - 8 // -8 for the padding
+			if (duration >= 1.5 || ['lunch', 'pause'].includes(props.course.type)) size.value = 80 * getDuration(props.course.start, props.course.end) - 8 // -8 for the padding
 			else size.value = 80 - 8 // same
 		}
 	}
@@ -66,18 +67,34 @@
 		calcColor();
 		calcMargin();
 	});
+
+	watch(() => props.course, () => {
+		calcSize();
+		calcColor();
+		calcMargin();
+	}, { deep: true });
+
+	console.log(props.course)
 </script>
 <template>
-	<div class="select-none py-1 duration-500 hover:scale-102" :style="{ marginTop: marginTop + 'px' }">
+	<div
+		v-if="course.type == 'pause'"
+		class="select-none duration-500 sm:py-1 hover:scale-102"
+		:style="{ marginTop: marginTop + 'px' }"
+	>
 		<div
-			v-if="course.type == 'pause'"
 			:style="{ height: size  + 'px' }"
+			class="max-sm:hidden"
 		></div>
-
+	</div>
+	<div
+		class="select-none py-1"
+		v-else-if="course.type == 'lunch'"
+		:style="{ marginTop: marginTop + 'px' }"
+	>
 		<div
-			v-else-if="course.type == 'lunch'"
 			class="flex bg-[#31415850] text-white rounded-[20px] w-full overflow-hidden"
-			:style="{ cursor: maxScreen('xs') ? 'pointer' : 'default', opacity: +!!maxScreen('xs'), height: size + 'px' }"
+			:style="{ cursor: maxScreen('xs') ? 'pointer' : 'default', opacity: +!!maxScreen('sm'), height: size + 'px' }"
 		>
 			<div class="w-8 h-full p-3 overflow-hidden">
 				<div class="rounded-full h-full" :style="{ backgroundColor: color[isDark() ? 2 : 4], opacity: isDark() ? .5 : 1 }"></div>
@@ -90,8 +107,13 @@
 				</div>
 			</div>
 		</div>
-
-		<div v-else class="cursor-pointer flex text-white rounded-[20px] w-full overflow-hidden" :style="{ backgroundColor: color[isDark() ? 3 : 5], color: isDark() ? 'white' : color[3], height: size + 'px' }" v-on:click="focusedCourse = course">
+	</div>
+	<div
+		class="select-none duration-500 py-1 hover:scale-102"
+		v-else
+		:style="{ marginTop: marginTop + 'px' }"
+	>
+		<div class="cursor-pointer flex text-white rounded-[20px] w-full overflow-hidden" :style="{ backgroundColor: color[isDark() ? 3 : 5], color: isDark() ? 'white' : color[3], height: size + 'px' }" v-on:click="focusedCourse = course">
 			<div class="w-8 h-full p-3 overflow-hidden">
 				<div class="rounded-full h-full" :style="{ backgroundColor: color[isDark() ? 2 : 4], opacity: isDark() ? .5 : 1 }"></div>
 			</div>
