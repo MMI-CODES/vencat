@@ -41,6 +41,7 @@ export const colors: Record<string, string[]> = {
 	'CM':             ['#1A0609', '#6B1420', '#A01C38', '#E14864', '#EE7A94', '#F5B3C7', '#FDD4DC'],
 	'Projet Tutoré':  ['#080640', '#1A0B7A', '#352FA8', '#5349D7', '#9B8FE3', '#D4C7F0', '#E8E0F7'],
 	'Réunion':        ['#2B1A00', '#8B4C00', '#B86600', '#D29130', '#E5B565', '#F0D4A8', '#F9E8D6'],
+	'Entreprise':     ['#331100', '#7A3E00', '#B75F00', '#FF9200', '#FFB86A', '#FFD6B3', '#FFF3E6'],
 	'pause':          ['#050810', '#0E1820', '#1C2C3E', '#314158', '#6B8FA5', '#A8C7D9', '#D9E8F0'],
 	'finished':       ['#050810', '#0E1820', '#1C2C3E', '#314158', '#6B8FA5', '#A8C7D9', '#D9E8F0'],
 	'unknown':        ['#050810', '#0E1820', '#1C2C3E', '#314158', '#6B8FA5', '#A8C7D9', '#D9E8F0']
@@ -116,5 +117,6 @@ export const modules: Record<string, Module> = {
 	'SAE210': { title: 'Gestion de Projet & Recommandation',                     emoji: '🧠', short: 'Gest. Projet & Recomm.', description: 'Menez un projet de bout en bout en produisant une recommandation argumentée et structurée.', coeff: 10 },
 
 	'lunch': { title: 'Déjeûner',  emoji: '🍽️', short: 'Déjeûner', description: 'Savourez un repas 5 étoiles ou un plateau du CROUS', coeff: 0 },
+	'Entreprise': { title: 'Entreprise',  emoji: '🔨', short: 'Entreprise', description: 'Alternance', coeff: 0 },
 	'Réunion': { title: 'Réunion', emoji: '🧠', short: 'Réunion', description: '', coeff: 0 },
 }
