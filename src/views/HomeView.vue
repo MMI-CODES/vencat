@@ -15,18 +15,33 @@
 
 	const isMobileViewport = ref<boolean>(false);
 
-	const groups: Record<string, string> = {
-		'1A1': "G1-QJ2DMFYC5987",
-		'1A2': "G1-PW2GUKMM5988",
-		'1B1': "G1-HN2CHYNX5990",
-		'1B2': "G1-QW2SJTJH5991",
-		'2A1': "G1-QS2QEJVB5994",
-		'2A2': "G1-EG2LDXAM5995",
-		'2B1': "G1-AE2BGJHX5997",
-		'2B2': "G1-TM2VJCBU5998"
+	const groups: Record<string, Record<string, string>> = {
+		'MMI-1': {
+			'A1': "G1-QJ2DMFYC5987", // chômeurs
+			'A2': "G1-PW2GUKMM5988",
+			'B1': "G1-HN2CHYNX5990",
+			'B2': "G1-QW2SJTJH5991" // chômeurs ++
+		},
+		'MMI-2': {
+			'A1': "G1-QS2QEJVB5994",
+			'A2': "G1-EG2LDXAM5995",
+			'B1': "G1-AE2BGJHX5997", // chômeurs pro max ultra
+			'B2': "G1-TM2VJCBU5998"
+		},
+		'MMI-3 DW (dev)': {
+			'FA A1': "G1-TS2PGRAD6003",
+			'FA A2': "G1-KL2GMWYW6004"
+		},
+		'MMI-3 CN (crea)': {
+			'FI A1': "G1-EB2URAPF6006",
+			'FI A2': "G1-JP2NSAYC6007",
+			'FA A1': "G1-CC2LTGMX6000",
+			'FA A2': "G1-HW2LKCBM6001"
+		}
 	}
 
-	const group_id = ref<string>(groups["1A2"]!);
+	const promo_id = ref<string>("MMI-1");
+	const group_id = ref<string>(groups[promo_id.value]!['A1']!);
 
 	const weekdays = [
 		'Lundi',
@@ -65,6 +80,10 @@
 
 	watch(group_id, async () => {
 		days.value = await loadWeek(group_id.value, day.value)
+	})
+
+	watch(promo_id, async () => {
+		console.log(promo_id.value)
 	})
 
 
@@ -136,11 +155,21 @@
 		<div class="flex gap-2 justify-center">
 			<button class="text-white text-sm font-semibold rounded-full px-3 py-2 duration-150 hover:scale-105" @click="fbwd"><FastBackward className="fill-slate-950 w-6 h-6 dark:fill-white" /></button>
 
-			<select v-model="group_id" class="block bg-slate-500/15 text-sm font-bold rounded-full px-4 py-2">
-				<option class="text-slate-900 text-sm text-center font-semibold" v-for="group in Object.keys(groups)" :value="groups[group]">{{ group }}</option>
+			<select v-model="promo_id" class="block bg-slate-500/15 text-sm font-bold rounded-full px-4 py-2">
+				<option class="text-slate-900 text-sm text-center font-semibold" v-for="promo in Object.keys(groups)" :value="promo">{{ promo }}</option>
 			</select>
 
 			<button class="text-white text-sm font-semibold rounded-full px-3 py-2 duration-150 hover:scale-105" @click="ffwd"><FastForward className="fill-slate-950 w-6 h-6 dark:fill-white" /></button>
+		</div>
+		<div class="flex items-center justify-center">
+			<div class="block">
+				<button
+					class="text-slate-900 text-sm text-center font-semibold border-b-4 px-4 py-2 duration-150 dark:text-white hover:bg-slate-500/25"
+					:class="group_id == groups[promo_id]![group]! ? 'border-b-red-500' : 'border-transparent'"
+					v-for="group in Object.keys(groups[promo_id]!)"
+					@click="() => { group_id = groups[promo_id]![group]! }"
+				>{{ group }}</button>
+			</div>
 		</div>
 	</header>
 	<main class="flex px-4 pb-4 gap-2 md:p-8">
