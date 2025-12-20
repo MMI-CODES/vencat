@@ -93,11 +93,11 @@
 		:style="{ marginTop: marginTop + 'px' }"
 	>
 		<div
-			class="flex bg-[#31415850] text-white rounded-[20px] w-full overflow-hidden"
+			class="flex bg-[#ffffff20] text-white rounded-[20px] w-full overflow-hidden"
 			:style="{ cursor: maxScreen('xs') ? 'pointer' : 'default', opacity: +!!maxScreen('sm'), height: size + 'px' }"
 		>
 			<div class="w-8 h-full p-3 overflow-hidden">
-				<div class="rounded-full h-full" :style="{ backgroundColor: props.course.end < new Date() ?color[isDark() ? 2 : 4] : '#ffffff20', opacity: isDark() ? .5 : 1 }"></div>
+				<div class="rounded-full h-full" :style="{ backgroundColor: '#ffffff30' }"></div>
 			</div>
 			<div class="flex-1 py-2 pr-4">
 				<div class="flex items-center gap-1 h-full">

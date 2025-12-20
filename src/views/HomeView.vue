@@ -161,7 +161,7 @@
 			<div class="block">
 				<button
 					class="text-slate-900 text-sm text-center font-bold border-b-4 px-4 py-2 duration-150 dark:text-white"
-					:class="group_id == groups[promo_id]![group]! ? 'border-b-red-500' : 'border-transparent hover:border-b-red-500/25'"
+					:class="group_id == groups[promo_id]![group]! ? 'border-b-red-500' : 'border-transparent hover:border-b-red-500/50'"
 					v-for="group in Object.keys(groups[promo_id]!)"
 					@click="() => { group_id = groups[promo_id]![group]! }"
 				>{{ group }}</button>
