@@ -119,9 +119,9 @@
 			</div>
 			<div class="flex-1 py-2 pr-4">
 				<div class="flex items-center gap-2">
-					<span class="bg-slate-950/5 text-xs font-semibold truncate rounded-lg max-w-16 px-2 py-1" :style="{ backgroundColor: props.course.end < new Date() ? '#ffffff30' : (color[isDark() ? 2 : 4] + '30') }">{{ course.location.split('-')[0]!.trim() || "Salle Inconnue" }}</span>
+					<span class="shrink-0 bg-slate-950/5 text-xs font-semibold truncate rounded-lg max-w-18 px-2 py-1" :style="{ backgroundColor: props.course.end < new Date() ? '#ffffff30' : (color[isDark() ? 2 : 4] + '30') }">{{ course.location.split('-')[0]!.trim() || "Salle Inconnue" }}</span>
 					<span class="flex-1 text-xs text-center font-semibold py-1">{{ module.emoji }} {{ course.module }}</span>
-					<span class="text-sm font-semibold line-clamp-1">{{ toFormatHHMM(new Date(course.start)) }} - {{ toFormatHHMM(new Date(course.end)) }}</span>
+					<span class="text-xs font-semibold line-clamp-1">{{ toFormatHHMM(new Date(course.start)) }} - {{ toFormatHHMM(new Date(course.end)) }}</span>
 				</div>
 				<div class="py-0.5 -space-y-1">
 					<h3 class="text-[17px] font-bold line-clamp-1">{{ module.short }}</h3>
