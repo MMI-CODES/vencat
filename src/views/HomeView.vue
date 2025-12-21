@@ -10,7 +10,8 @@
 	import type { Course } from 'celcat';
 
 	import { loadWeek, focusedCourse } from '@/scripts/timetable';
-	import { toFormatJJMoisAAAA } from '@/scripts/utils';
+	import { toFormatJJMoisAAAA, toFormatHHMM } from '@/scripts/utils';
+	import { maxScreen } from '@/scripts/media';
 
 
 	const isMobileViewport = ref<boolean>(false);
@@ -28,11 +29,11 @@
 			'B1': "G1-AE2BGJHX5997", // chômeurs pro max ultra
 			'B2': "G1-TM2VJCBU5998"
 		},
-		'MMI-3 DW (dev)': {
+		'MMI-3 dev': {
 			'FA A1': "G1-TS2PGRAD6003",
 			'FA A2': "G1-KL2GMWYW6004"
 		},
-		'MMI-3 CN (crea)': {
+		'MMI-3 crea': {
 			'FI A1': "G1-EB2URAPF6006",
 			'FI A2': "G1-JP2NSAYC6007",
 			'FA A1': "G1-CC2LTGMX6000",
@@ -144,37 +145,39 @@
 <template>
 	<CourseFocus v-if="focusedCourse" :course="focusedCourse" />
 
-	<header class="p-8 space-y-6 max-sm:space-y-4">
-		<div class="flex items-center justify-center gap-4">
-			<img src="@/assets/logo.svg" class="block w-12 h-12 max-sm:w-5 max-sm:h-5" /> <h1 class="select-none text-4xl font-black max-sm:text-xl">Vencat</h1>
+	<nav class="flex justify-between p-4 max-sm:flex-col max-sm:justify-center max-sm:gap-2">
+		<div class="flex items-center justify-center gap-2">
+			<img src="@/assets/logo.svg" class="block w-6 h-6" /> <h1 class="select-none text-xl font-black max-sm:text-xl">Vencat</h1>
 		</div>
 		<div class="flex gap-2 justify-center">
-			<button class="text-white text-sm font-semibold rounded-full px-3 py-2 duration-150 hover:scale-105" @click="fbwd"><FastBackward className="fill-slate-950 w-6 h-6 dark:fill-white" /></button>
-
+		</div>
+		<div class="flex items-center justify-center max-sm:flex-col max-sm:gap-2">
 			<select v-model="promo_id" class="block bg-slate-500/15 text-sm font-bold rounded-full px-4 py-2">
 				<option class="text-slate-900 text-sm text-center font-semibold" v-for="promo in Object.keys(groups)" :value="promo">{{ promo }}</option>
 			</select>
-
-			<button class="text-white text-sm font-semibold rounded-full px-3 py-2 duration-150 hover:scale-105" @click="ffwd"><FastForward className="fill-slate-950 w-6 h-6 dark:fill-white" /></button>
-		</div>
-		<div class="flex items-center justify-center">
-			<div class="block">
+			<div>
 				<button
 					class="text-slate-900 text-sm text-center font-bold border-b-4 px-4 py-2 duration-150 dark:text-white"
-					:class="group_id == groups[promo_id]![group]! ? 'border-b-red-500' : 'border-transparent hover:border-b-red-500/50'"
+					:class="group_id == groups[promo_id]![group]! ? 'border-b-rose-500' : 'border-transparent hover:border-b-rose-500/50'"
 					v-for="group in Object.keys(groups[promo_id]!)"
 					@click="() => { group_id = groups[promo_id]![group]! }"
 				>{{ group }}</button>
 			</div>
 		</div>
+	</nav>
+	<header class="flex px-4 pb-4 gap-2 md:px-8">
+		<button class="text-white text-sm font-semibold rounded-full px-3 py-2 duration-150 hover:scale-105" @click="fbwd"><FastBackward className="fill-slate-950 w-6 h-6 dark:fill-white" /></button>
+		<section v-for="(item, index) in viewport" :key="group_id + '-' + index + '-' + offset" class="flex-1 text-center -space-y-1">
+			<h2 class="text-xl font-bold">{{ weekdays[index + offset] }}</h2>
+			<p v-if="!isSameWeek(sectionDate(index))" class="text-sm font-semibold opacity-50">{{ sectionDate(index).getFullYear() == 2026 ? toFormatJJMoisAAAA(sectionDate(index)).full : toFormatJJMoisAAAA(sectionDate(index)).month  }}</p>
+		</section>
+		<button class="text-white text-sm font-semibold rounded-full px-3 py-2 duration-150 hover:scale-105" @click="ffwd"><FastForward className="fill-slate-950 w-6 h-6 dark:fill-white" /></button>
 	</header>
-	<main class="flex px-4 pb-4 gap-2 md:p-8">
+	<main class="flex px-4 pb-4 gap-2 md:px-8 md:pb-8">
+		<section class="sm:w-12"></section>
 		<section v-for="(item, index) in viewport" :key="group_id + '-' + index + '-' + offset" class="flex-1 flex flex-col">
-			<div class="text-xl text-center mb-8 -space-y-1 max-sm:mb-4">
-				<h2 class="font-bold">{{ weekdays[index + offset] }}</h2>
-				<p v-if="!isSameWeek(sectionDate(index))" class="text-sm font-semibold opacity-50">{{ sectionDate(index).getFullYear() == 2026 ? toFormatJJMoisAAAA(sectionDate(index)).full : toFormatJJMoisAAAA(sectionDate(index)).month  }}</p>
-			</div>
 			<CourseView v-for="(course, idx) in (days[index + offset] || [])" :key="index + '-' + idx + '-' + (course.uid || '') + '-' + (new Date(course.start)).getTime()" :course="course" :index="idx" />
 		</section>
+		<section class="sm:w-12"></section>
 	</main>
 </template>
