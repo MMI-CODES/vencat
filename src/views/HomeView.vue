@@ -2,8 +2,8 @@
 	import CourseView from '@/components/CourseView.vue';
 	import CourseFocus from '@/components/layout/CourseFocus.vue';
 
-	import FastBackward from '@/components/icons/FastBackward.vue';
-	import FastForward from '@/components/icons/FastForward.vue';
+	import Backward from '@/components/icons/Backward.vue';
+	import Forward from '@/components/icons/Forward.vue';
 
 	import { ref, onMounted, watch } from 'vue';
 
@@ -166,12 +166,12 @@
 		</div>
 	</nav>
 	<header class="flex px-4 pb-4 gap-2 md:px-8">
-		<button class="text-white text-sm font-semibold rounded-full px-3 py-2 duration-150 hover:scale-105" @click="fbwd"><FastBackward className="fill-slate-950 w-6 h-6 dark:fill-white" /></button>
+		<button class="text-white text-sm font-semibold rounded-full px-3 py-2 duration-150 hover:scale-105" @click="fbwd"><Backward className="fill-slate-950 w-6 h-6 dark:fill-white" /></button>
 		<section v-for="(item, index) in viewport" :key="group_id + '-' + index + '-' + offset" class="flex-1 text-center -space-y-1">
 			<h2 class="text-xl font-bold">{{ weekdays[index + offset] }}</h2>
 			<p v-if="!isSameWeek(sectionDate(index))" class="text-sm font-semibold opacity-50">{{ sectionDate(index).getFullYear() == 2026 ? toFormatJJMoisAAAA(sectionDate(index)).full : toFormatJJMoisAAAA(sectionDate(index)).month  }}</p>
 		</section>
-		<button class="text-white text-sm font-semibold rounded-full px-3 py-2 duration-150 hover:scale-105" @click="ffwd"><FastForward className="fill-slate-950 w-6 h-6 dark:fill-white" /></button>
+		<button class="text-white text-sm font-semibold rounded-full px-3 py-2 duration-150 hover:scale-105" @click="ffwd"><Forward className="fill-slate-950 w-6 h-6 dark:fill-white" /></button>
 	</header>
 	<main class="flex px-4 pb-4 gap-2 md:px-8 md:pb-8">
 		<section class="sm:w-12"></section>
