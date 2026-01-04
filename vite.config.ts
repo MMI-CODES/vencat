@@ -13,8 +13,8 @@ export default defineConfig({
 			registerType: 'autoUpdate',
 			includeAssets: ['favicon.ico'],
 			manifest: {
-				name: 'CELCAT',
-				short_name: 'CELCAT',
+				name: 'Vencat',
+				short_name: 'Vencat',
 				description: "Emploi du temps plus beau que CELCAT",
 				start_url: "/",
 				display: "standalone",

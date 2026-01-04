@@ -4,7 +4,7 @@
 	import type { Course } from 'celcat';
 	import type { Module } from '@/scripts/utils';
 
-	import { toFormatHHMM, getDuration, colors, modules } from '@/scripts/utils';
+	import { toFormatHHMM, durationHHMM, getDuration, colors, modules } from '@/scripts/utils';
 	import { maxScreen, isDark } from '@/scripts/media';
 	import { focusedCourse } from '@/scripts/timetable';
 
@@ -79,13 +79,20 @@
 <template>
 	<div
 		v-if="course.type == 'pause'"
-		class="select-none duration-500 sm:py-1 hover:scale-102"
+		class="select-none sm:py-1"
 		:style="{ marginTop: marginTop + 'px' }"
 	>
 		<div
-			:style="{ height: size  + 'px' }"
-			class="max-sm:hidden"
-		></div>
+			:style="maxScreen('xs') ? {} : { height: size  + 'px' }"
+			class="flex gap-4 px-8"
+			:class="maxScreen('xs') ? 'items-center h-8' : 'pt-2'"
+		>
+			<div class="grow flex gap-4 items-center h-fit">
+				<div class="grow bg-white/40 rounded-full h-0.5"></div>
+				<h3 class="text-white/75 text-xs text-center">Pause de {{ durationHHMM(getDuration(course.start, course.end)) }}</h3>
+				<div class="grow bg-white/40 rounded-full h-0.5"></div>
+			</div>
+		</div>
 	</div>
 	<div
 		class="select-none py-1"
@@ -93,11 +100,11 @@
 		:style="{ marginTop: marginTop + 'px' }"
 	>
 		<div
-			class="flex bg-[#31415850] text-white rounded-[20px] w-full overflow-hidden"
+			class="flex bg-[#ffffff20] text-white rounded-[20px] w-full overflow-hidden"
 			:style="{ cursor: maxScreen('xs') ? 'pointer' : 'default', opacity: +!!maxScreen('sm'), height: size + 'px' }"
 		>
 			<div class="w-8 h-full p-3 overflow-hidden">
-				<div class="rounded-full h-full" :style="{ backgroundColor: color[2], opacity: isDark() ? .5 : 1 }"></div>
+				<div class="rounded-full h-full" :style="{ backgroundColor: '#ffffff30' }"></div>
 			</div>
 			<div class="flex-1 py-2 pr-4">
 				<div class="flex items-center gap-1 h-full">
@@ -113,18 +120,18 @@
 		v-else
 		:style="{ marginTop: marginTop + 'px' }"
 	>
-		<div class="cursor-pointer flex text-white rounded-[20px] w-full overflow-hidden" :style="{ backgroundColor: color[3], color: 'white', height: size + 'px' }" v-on:click="focusedCourse = course">
+		<div class="cursor-pointer flex backdrop-blur-md text-white rounded-[20px] w-full overflow-hidden" :style="{ backgroundColor: props.course.end < new Date() ? '#ffffff30' : color[isDark() ? 3 : 5], color: isDark() ? 'white' : color[3], height: size + 'px' }" v-on:click="focusedCourse = course">
 			<div class="w-8 h-full p-3 overflow-hidden">
-				<div class="rounded-full h-full" :style="{ backgroundColor: color[2], opacity: isDark() ? .5 : 1 }"></div>
+				<div class="rounded-full h-full" :style="{ backgroundColor: props.course.end < new Date() ? '#ffffff50' : color[isDark() ? 2 : 4], opacity: isDark() ? .5 : 1 }"></div>
 			</div>
 			<div class="flex-1 py-2 pr-4">
 				<div class="flex items-center gap-2">
-					<span class="bg-slate-950/5 text-xs font-semibold truncate rounded-lg max-w-16 px-2 py-1" :style="{ backgroundColor: color[2] + '50' }">{{ course.location.split('-')[0]!.trim() || "Salle Inconnue" }}</span>
+					<span class="shrink-0 bg-slate-950/5 text-xs font-semibold truncate rounded-lg max-w-18 px-2 py-1" :style="{ backgroundColor: props.course.end < new Date() ? '#ffffff30' : (color[isDark() ? 2 : 4] + '30') }">{{ course.location.split('-')[0]!.trim() || "Salle Inconnue" }}</span>
 					<span class="flex-1 text-xs text-center font-semibold py-1">{{ module.emoji }} {{ course.module }}</span>
-					<span class="text-sm font-semibold line-clamp-1">{{ toFormatHHMM(new Date(course.start)) }} - {{ toFormatHHMM(new Date(course.end)) }}</span>
+					<span class="text-xs font-semibold line-clamp-1">{{ toFormatHHMM(new Date(course.start)) }} - {{ toFormatHHMM(new Date(course.end)) }}</span>
 				</div>
-				<div>
-					<h3 class="font-black line-clamp-1">{{ module.short }}</h3>
+				<div class="py-0.5 -space-y-1">
+					<h3 class="text-[17px] font-bold line-clamp-1">{{ module.short }}</h3>
 					<span v-if="getDuration(course.start, course.end) >= 1.5 || maxScreen('xs')" class="text-sm font-semibold line-clamp-1">
 						<span v-if="course.teachers.length == 1">{{ course.teachers[0] }}</span>
 						<span v-else>{{ course.teachers.length }} intervenants</span>
