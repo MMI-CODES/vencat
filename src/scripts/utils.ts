@@ -49,7 +49,7 @@ export const toFormatJJMoisAAAA = (date: Date, short = false): Record<string, st
 
 export const colors: Record<string, string[]> = {
 	// SAMPLE             VERY DARK     DARKER       DARK         ORIGINAL     LIGHT         PASTEL      VERY LIGHT
-	'DS':             ['#0F0F1A', '#990099', '#CC00CC', '#FF48F3', '#FF99F7', '#FFB3F7', '#FFE6FF'],
+	'DS':             ['#1A0F1AFF', '#990099', '#CC00CC', '#FF48F3', '#FF99F7', '#FFB3F7', '#FFE6FF'],
 	'TD':             ['#0A1117', '#0F3A52', '#1D5A7A', '#2E8DB6', '#6FB5D9', '#A8D9E8', '#D9EFF5'],
 	'TP':             ['#0B061A', '#2C1451', '#461F73', '#622FB5', '#9B6FD1', '#D4B5E8', '#EDD9F7'],
 	'CM':             ['#1A0609', '#6B1420', '#A01C38', '#E14864', '#EE7A94', '#F5B3C7', '#FDD4DC'],
