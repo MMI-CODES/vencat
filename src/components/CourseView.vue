@@ -1,15 +1,14 @@
 <script setup lang="ts">
 	import { ref, onMounted, watch } from 'vue';
 
-	import type { Course } from 'celcat';
 	import type { Module } from '@/scripts/utils';
 
 	import { toFormatHHMM, durationHHMM, getDuration, colors, modules } from '@/scripts/utils';
 	import { maxScreen, isDark } from '@/scripts/media';
-	import { focusedCourse } from '@/scripts/timetable';
+	import { focusedCourse, focusedModule, type UICourse } from '@/scripts/timetable';
 
 	const props = defineProps<{
-		course: Course,
+		course: UICourse,
 		index: number
 	}>();
 
@@ -74,10 +73,20 @@
 		calcMargin();
 	}, { deep: true });
 
-	console.log(props.course)
+	onMounted(() => {
+		document.getElementById(props.course.uid)?.addEventListener('mouseover', (e) => {
+			focusedModule.value = props.course.module
+		});
+
+		document.getElementById(props.course.uid)?.addEventListener('mouseout', (e) => {
+			focusedModule.value = null
+		});
+	});
 </script>
 <template>
 	<div
+		:id="course.uid"
+		:key="course.uid"
 		v-if="course.type == 'pause'"
 		class="select-none sm:py-1"
 		:style="{ marginTop: marginTop + 'px' }"
@@ -95,6 +104,7 @@
 		</div>
 	</div>
 	<div
+		:id="course.uid"
 		class="select-none py-1"
 		v-else-if="course.type == 'lunch'"
 		:style="{ marginTop: marginTop + 'px' }"
@@ -116,11 +126,13 @@
 		</div>
 	</div>
 	<div
+		:id="course.uid"
 		class="select-none duration-500 py-1 hover:scale-102"
+		:class="course.hidden ? 'opacity-25' : ''"
 		v-else
 		:style="{ marginTop: marginTop + 'px' }"
 	>
-		<div class="cursor-pointer flex backdrop-blur-md text-white rounded-[20px] w-full overflow-hidden" :style="{ backgroundColor: props.course.end < new Date() ? '#ffffff30' : color[isDark() ? 3 : 5], color: isDark() ? 'white' : color[3], height: size + 'px' }" v-on:click="focusedCourse = course">
+		<div class="cursor-pointer flex text-white rounded-[20px] w-full overflow-hidden" :style="{ backgroundColor: props.course.end < new Date() ? '#ffffff30' : color[isDark() ? 3 : 5], color: isDark() ? 'white' : color[3], height: size + 'px' }" v-on:click="focusedCourse = course">
 			<div class="w-8 h-full p-3 overflow-hidden">
 				<div class="rounded-full h-full" :style="{ backgroundColor: props.course.end < new Date() ? '#ffffff50' : color[isDark() ? 2 : 4], opacity: isDark() ? .5 : 1 }"></div>
 			</div>
