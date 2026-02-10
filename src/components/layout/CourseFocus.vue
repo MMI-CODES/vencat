@@ -7,16 +7,16 @@
 	import PeopleIcon from '../icons/PeopleIcon.vue';
 	import InfoIcon from '../icons/InfoIcon.vue';
 	import ExtLinkIcon from '../icons/ExtLinkIcon.vue';
+	import FunnelIcon from '../icons/FunnelIcon.vue';
 
-	import type { Course } from 'celcat';
 	import type { Module } from '@/scripts/utils';
 
 	import { toFormatHHMM, colors, modules } from '@/scripts/utils';
-	import { focusedCourse } from '@/scripts/timetable';
+	import { focusedCourse, focusedModule, type UICourse } from '@/scripts/timetable';
 	import { maxScreen, isDark } from '@/scripts/media';
 
 	const props = defineProps<{
-		course: Course,
+		course: UICourse,
 	}>();
 
 	const module: Module = modules[props.course.module] || { title: props.course.module, emoji: '', short: props.course.module, description: '', coeff: 0 };
@@ -87,6 +87,14 @@
 				</div>
 			</div>
 
+			<div class="flex">
+				<div class="shrink-0 flex items-center w-6">
+					<FunnelIcon :color="color[3] || '#000000'" class="w-5 h-5" />
+				</div>
+				<div class="text-sm max-w-lg -translate-y-0.5" :style="{ color: color[3] }">
+					<a @click="() => { focusedModule = course.module; focusedCourse = null }" class="cursor-pointer underline-offset-[1.5px] decoration-[1.5px] hover:underline">Afficher uniquement les cours de ce module</a>
+				</div>
+			</div>
 			<div class="flex">
 				<div class="shrink-0 flex items-center w-6">
 					<ExtLinkIcon :color="color[3] || '#000000'" class="w-5 h-5" />

@@ -3,22 +3,26 @@ import { Timetable } from "celcat";
 
 import { getDuration } from "./utils";
 
-const tt = new Timetable()
+const tt = new Timetable();
 
-export async function loadWeek(group_id: string, startDate: Date) {
+export type UICourse = Course & {
+	hidden: boolean
+}
+
+export async function loadWeek(group_id: string, startDate: Date, modules?: string[]): Promise<UICourse[][]> {
 	try {
 		const weekStart = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + 1 - startDate.getDay());
 		const weekEnd = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + 7 - startDate.getDay());
 
 		const courses: Course[] = await tt.getTimetable(group_id, weekStart, weekEnd);
 
-		const tempDays: Course[][] = [[], [], [], [], [], [], []];
+		const tempDays: UICourse[][] = [[], [], [], [], [], [], []];
 
 		if (!courses || courses.length === 0) {
 			return tempDays;
 		}
 
-		let lastCourse: Course = {
+		let lastCourse: UICourse = {
 			uid: 'matin',
 			type: 'pause',
 			summary: "Matin",
@@ -31,10 +35,17 @@ export async function loadWeek(group_id: string, startDate: Date) {
 			end: courses[0]!.start,
 			teachers: [],
 			location: '',
-			module: ''
-		} as Course
+			module: '',
+			hidden: false
+		} as UICourse
 
 		courses.forEach(course => {
+			let hidden = false;
+
+			if (modules && !modules.includes(course.module)) {
+				hidden = true;
+			}
+
 			const dayIndex = (new Date(course.start).getDay() + 6) % 7;
 
 			let duration = lastCourse ? getDuration(lastCourse.end, course.start) : 0
@@ -49,8 +60,9 @@ export async function loadWeek(group_id: string, startDate: Date) {
 					end: course.start,
 					teachers: [],
 					location: '',
-					module: isLunch ? 'lunch' : 'pause'
-				} as Course)
+					module: isLunch ? 'lunch' : 'pause',
+					hidden: false
+				} as UICourse)
 			}
 
 			if (course.module == 'Reunion') {
@@ -59,8 +71,15 @@ export async function loadWeek(group_id: string, startDate: Date) {
 				course.summary = 'Réunion'
 			}
 
-			tempDays[dayIndex]!.push(course);
-			lastCourse = course
+			tempDays[dayIndex]!.push({
+				...course,
+				hidden: hidden
+			} as UICourse);
+
+			lastCourse = {
+				...course,
+				hidden: hidden
+			} as UICourse;
 		});
 
 		return tempDays;
@@ -71,4 +90,5 @@ export async function loadWeek(group_id: string, startDate: Date) {
 }
 
 import { ref } from 'vue';
-export const focusedCourse = ref<Course | null>(null);
+export const focusedCourse = ref<UICourse | null>(null);
+export const focusedModule = ref<string | null>(null);

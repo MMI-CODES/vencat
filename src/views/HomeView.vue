@@ -7,11 +7,8 @@
 
 	import { ref, onMounted, watch } from 'vue';
 
-	import type { Course } from 'celcat';
-
-	import { loadWeek, focusedCourse } from '@/scripts/timetable';
-	import { toFormatJJMoisAAAA, toFormatHHMM } from '@/scripts/utils';
-	import { maxScreen } from '@/scripts/media';
+	import { loadWeek, focusedCourse, focusedModule, type UICourse } from '@/scripts/timetable';
+	import { toFormatJJMoisAAAA } from '@/scripts/utils';
 
 
 	const isMobileViewport = ref<boolean>(false);
@@ -57,7 +54,7 @@
 	const offset = ref<number>(0)
 	const viewport = ref<number>(5)
 
-	const days = ref<Course[][]>([[], [], [], [], [], [], []]);
+	const days = ref<UICourse[][]>([[], [], [], [], [], [], []]);
 
 	const day = ref<Date>(new Date());
 
@@ -71,7 +68,7 @@
 		};
 		mediaQuery.addEventListener('change', handleChange);
 
-		days.value = await loadWeek(group_id.value, day.value)
+		days.value = await loadWeek(group_id.value, day.value, focusedModule.value ? [focusedModule.value] : undefined)
 	});
 
 	watch(isMobileViewport, () => {
@@ -80,7 +77,7 @@
 	})
 
 	watch(group_id, async () => {
-		days.value = await loadWeek(group_id.value, day.value)
+		days.value = await loadWeek(group_id.value, day.value, focusedModule.value ? [focusedModule.value] : undefined)
 	})
 
 
@@ -92,7 +89,7 @@
 			day.value = new Date(day.value.getFullYear(), day.value.getMonth(), day.value.getDate() + 7);
 		}
 
-		days.value = await loadWeek(group_id.value, day.value);
+		days.value = await loadWeek(group_id.value, day.value, focusedModule.value ? [focusedModule.value] : undefined)
 	}
 
 	async function bwd() {
@@ -141,6 +138,10 @@
 
 		return a.getFullYear() === b.getFullYear() && a.getTime() === b.getTime();
 	}
+
+	watch(focusedModule, async () => {
+		days.value = await loadWeek(group_id.value, day.value, focusedModule.value ? [focusedModule.value] : undefined)
+	});
 </script>
 <template>
 	<CourseFocus v-if="focusedCourse" :course="focusedCourse" />
