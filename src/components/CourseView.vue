@@ -4,15 +4,15 @@
 	import type { Module } from '@/scripts/utils';
 
 	import { toFormatHHMM, durationHHMM, getDuration, colors, modules } from '@/scripts/utils';
-	import { maxScreen, isDark } from '@/scripts/media';
-	import { focusedCourse, focusedModule, type UICourse } from '@/scripts/timetable';
+	import { maxScreen } from '@/scripts/media';
+	import { focusedCourse, focusedModule, focusType, type UICourse } from '@/scripts/timetable';
 
 	const props = defineProps<{
 		course: UICourse,
 		index: number
 	}>();
 
-	const module: Module = modules[props.course.module] || { title: props.course.module, emoji: '', short: props.course.module, description: '', coeff: 0 };
+	const module: Module = modules.value[props.course.module] || { title: props.course.module, emoji: '', short: props.course.module, description: '', coeff: 0 };
 
 	const size = ref<number>(0)
 	const marginTop = ref<number>(0)
@@ -75,11 +75,11 @@
 
 	onMounted(() => {
 		document.getElementById(props.course.uid)?.addEventListener('mouseover', (e) => {
-			focusedModule.value = props.course.module
+			if (focusType.value == 'hover') focusedModule.value = props.course.module
 		});
 
 		document.getElementById(props.course.uid)?.addEventListener('mouseout', (e) => {
-			focusedModule.value = null
+			if (focusType.value == 'hover') focusedModule.value = null
 		});
 	});
 </script>
@@ -132,13 +132,13 @@
 		v-else
 		:style="{ marginTop: marginTop + 'px' }"
 	>
-		<div class="cursor-pointer flex text-white rounded-[20px] w-full overflow-hidden" :style="{ backgroundColor: props.course.end < new Date() ? '#ffffff30' : color[isDark() ? 3 : 5], color: isDark() ? 'white' : color[3], height: size + 'px' }" v-on:click="focusedCourse = course">
+		<div class="cursor-pointer flex text-white rounded-[20px] w-full overflow-hidden" :style="{ backgroundColor: props.course.end < new Date() ? '#ffffff30' : color[3], color: 'white', height: size + 'px' }" v-on:click="focusedCourse = course">
 			<div class="w-8 h-full p-3 overflow-hidden">
-				<div class="rounded-full h-full" :style="{ backgroundColor: props.course.end < new Date() ? '#ffffff50' : color[isDark() ? 2 : 4], opacity: isDark() ? .5 : 1 }"></div>
+				<div class="rounded-full h-full" :style="{ backgroundColor: props.course.end < new Date() ? '#ffffff50' : color[2], opacity: .5 }"></div>
 			</div>
 			<div class="flex-1 py-2 pr-4">
 				<div class="flex items-center gap-2">
-					<span class="shrink-0 bg-slate-950/5 text-xs font-semibold truncate rounded-lg max-w-18 px-2 py-1" :style="{ backgroundColor: props.course.end < new Date() ? '#ffffff30' : (color[isDark() ? 2 : 4] + '30') }">{{ course.location.split('-')[0]!.trim() || "Salle Inconnue" }}</span>
+					<span class="shrink-0 bg-slate-950/5 text-xs font-semibold truncate rounded-lg max-w-18 px-2 py-1" :style="{ backgroundColor: props.course.end < new Date() ? '#ffffff30' : (color[2] + '30') }">{{ course.location.split('-')[0]!.trim() || "Salle Inconnue" }}</span>
 					<span class="flex-1 text-xs text-center font-semibold py-1">{{ module.emoji }} {{ course.module }}</span>
 					<span class="text-xs font-semibold line-clamp-1">{{ toFormatHHMM(new Date(course.start)) }} - {{ toFormatHHMM(new Date(course.end)) }}</span>
 				</div>

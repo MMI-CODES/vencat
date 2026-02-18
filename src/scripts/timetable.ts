@@ -1,7 +1,7 @@
 import type { Course } from "celcat";
 import { Timetable } from "celcat";
 
-import { getDuration } from "./utils";
+import { getDuration, loadModules } from "./utils";
 
 const tt = new Timetable();
 
@@ -10,6 +10,8 @@ export type UICourse = Course & {
 }
 
 export async function loadWeek(group_id: string, startDate: Date, modules?: string[]): Promise<UICourse[][]> {
+	await loadModules();
+
 	try {
 		const weekStart = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + 1 - startDate.getDay());
 		const weekEnd = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + 7 - startDate.getDay());
@@ -89,6 +91,18 @@ export async function loadWeek(group_id: string, startDate: Date, modules?: stri
 	}
 }
 
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
+
 export const focusedCourse = ref<UICourse | null>(null);
+export const focusType = ref<'none' | 'hover' | 'filter'>(localStorage.getItem('focusType') as 'none' | 'hover' | 'filter' || 'none');
 export const focusedModule = ref<string | null>(null);
+
+watch(focusType, (newValue) => {
+	if (newValue == 'none') {
+		focusedModule.value = null;
+	}
+
+	if (newValue != 'filter') {
+		localStorage.setItem('focusType', newValue);
+	}
+});
