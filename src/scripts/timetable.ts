@@ -1,6 +1,7 @@
 import type { Course } from "celcat";
 import { Timetable } from "celcat";
 
+import { getDuration, loadModules } from "./utils";
 
 const tt = new Timetable();
 
@@ -9,6 +10,8 @@ export type UICourse = Course & {
 }
 
 export async function loadWeek(group_id: string, startDate: Date, modules?: string[]): Promise<UICourse[][]> {
+	await loadModules();
+
 	try {
 		const weekStart = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + 1 - startDate.getDay());
 		const weekEnd = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + 7 - startDate.getDay());

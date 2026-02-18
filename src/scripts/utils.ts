@@ -1,3 +1,5 @@
+import { ref } from 'vue';
+
 export const getDuration = (start: Date, end: Date): number => {
     const diff = end.getTime() - start.getTime();
     return diff / (1000 * 60 * 60);
@@ -78,13 +80,15 @@ export interface Module {
 	coeff: number
 }
 
-fetch('https://raw.githubusercontent.com/MMI-CODES/vencat/refs/heads/main/public/modules.json')
-	.then(response => response.json())
-	.then((data: Record<string, Module>) => {
-		modules = data;
-	})
-	.catch(error => {
+export async function loadModules(): Promise<void> {
+	return fetch('https://raw.githubusercontent.com/MMI-CODES/vencat/refs/heads/main/public/modules.json')
+		.then(response => response.json())
+		.then((data: Record<string, Module>) => {
+			modules.value = data;
+		})
+		.catch(error => {
 		console.error('Error loading modules.json:', error);
 	});
+}
 
-export let modules: Record<string, Module> = {};
+export let modules = ref<Record<string, Module>>({});
