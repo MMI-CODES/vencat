@@ -83,7 +83,7 @@
 	})
 
 
-	async function fwd() {
+	async function fwd(loadOnFinish: boolean = true) {
 		offset.value += 1
 
 		if (offset.value > 5) {
@@ -91,7 +91,9 @@
 			day.value = new Date(day.value.getFullYear(), day.value.getMonth(), day.value.getDate() + 7);
 		}
 
-		days.value = await loadWeek(group_id.value, day.value, focusedModule.value ? [focusedModule.value] : undefined)
+		if (loadOnFinish) {
+			days.value = await loadWeek(group_id.value, day.value, focusedModule.value ? [focusedModule.value] : undefined)
+		}
 	}
 
 	async function bwd() {
@@ -102,23 +104,29 @@
 			day.value = new Date(day.value.getFullYear(), day.value.getMonth(), day.value.getDate() - 7);
 		}
 
-		days.value = await loadWeek(group_id.value, day.value);
+		if (loadOnFinish) {
+			days.value = await loadWeek(group_id.value, day.value, focusedModule.value ? [focusedModule.value] : undefined)
+		}
 	}
 
 	async function ffwd() {
 		let _max: number = isMobileViewport.value ? 1 : 6
 
 		for (let i = 0; i < _max; i++) {
-			await fwd()
+			await fwd(false)
 		}
+
+		days.value = await loadWeek(group_id.value, day.value, focusedModule.value ? [focusedModule.value] : undefined)
 	}
 
 	async function fbwd() {
 		let _max: number = isMobileViewport.value ? 1 : 6
 
 		for (let i = 0; i < _max; i++) {
-			await bwd()
+			await bwd(false)
 		}
+
+		days.value = await loadWeek(group_id.value, day.value, focusedModule.value ? [focusedModule.value] : undefined)
 	}
 
 	function sectionDate(index: number) {
