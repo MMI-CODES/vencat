@@ -12,14 +12,14 @@
 	import type { Module } from '@/scripts/utils';
 
 	import { toFormatHHMM, colors, modules } from '@/scripts/utils';
-	import { focusedCourse, focusedModule, type UICourse } from '@/scripts/timetable';
+	import { focusedCourse, focusedModule, focusType, type UICourse } from '@/scripts/timetable';
 	import { maxScreen, isDark } from '@/scripts/media';
 
 	const props = defineProps<{
 		course: UICourse,
 	}>();
 
-	const module: Module = modules[props.course.module] || { title: props.course.module, emoji: '', short: props.course.module, description: '', coeff: 0 };
+	const module: Module = modules.value[props.course.module] || { title: props.course.module, emoji: '', short: props.course.module, description: '', coeff: 0 };
 
 	const color = ref<string[]>(colors['unknown']!)
 
@@ -92,7 +92,7 @@
 					<FunnelIcon :color="color[3] || '#000000'" class="w-5 h-5" />
 				</div>
 				<div class="text-sm max-w-lg -translate-y-0.5" :style="{ color: color[3] }">
-					<a @click="() => { focusedModule = course.module; focusedCourse = null }" class="cursor-pointer underline-offset-[1.5px] decoration-[1.5px] hover:underline">Afficher uniquement les cours de ce module</a>
+					<a @click="() => { focusedModule = course.module; focusedCourse = null; focusType = 'filter' }" class="cursor-pointer underline-offset-[1.5px] decoration-[1.5px] hover:underline">Afficher uniquement les cours de ce module</a>
 				</div>
 			</div>
 			<div class="flex">

@@ -7,11 +7,13 @@
 
 	import { ref, onMounted, watch } from 'vue';
 
-	import { loadWeek, focusedCourse, focusedModule, type UICourse } from '@/scripts/timetable';
+	import { loadWeek, focusedCourse, focusedModule, focusType, type UICourse } from '@/scripts/timetable';
 	import { toFormatJJMoisAAAA } from '@/scripts/utils';
+	import { CursorArrowRippleIcon, FunnelIcon } from '@heroicons/vue/24/outline';
 
 
 	const isMobileViewport = ref<boolean>(false);
+
 
 	const groups: Record<string, Record<string, string>> = {
 		'MMI-1': {
@@ -152,13 +154,21 @@
 		</div>
 		<div class="flex gap-2 justify-center">
 		</div>
-		<div class="flex items-center justify-center max-sm:flex-col max-sm:gap-2">
+		<div class="flex items-center justify-center gap-2 max-sm:flex-col">
+			<button
+				@click="focusType = focusType == 'none' ? 'hover' : 'none'"
+				class="group cursor-pointer duration-100"
+				:class="focusType == 'none' ? 'text-white opacity-50' : 'text-blue-400 opacity-100'"
+			>
+				<FunnelIcon v-if="focusType == 'filter'" class="w-6 h-6" />
+				<CursorArrowRippleIcon v-else class="w-6 h-6" />
+			</button>
 			<select v-model="promo_id" class="block bg-slate-500/15 text-sm font-bold rounded-full px-4 py-2">
 				<option class="text-slate-900 text-sm text-center font-semibold" v-for="promo in Object.keys(groups)" :value="promo">{{ promo }}</option>
 			</select>
 			<div>
 				<button
-					class="text-slate-900 text-sm text-center font-bold border-b-4 px-4 py-2 duration-150 dark:text-white"
+					class="text-white text-sm text-center font-bold border-b-4 px-4 py-2 duration-150"
 					:class="group_id == groups[promo_id]![group]! ? 'border-b-rose-500' : 'border-transparent hover:border-b-rose-500/50'"
 					v-for="group in Object.keys(groups[promo_id]!)"
 					@click="() => { group_id = groups[promo_id]![group]! }"
@@ -167,12 +177,12 @@
 		</div>
 	</nav>
 	<header class="flex px-4 pb-4 gap-2 md:px-8">
-		<button class="text-white text-sm font-semibold rounded-full px-3 py-2 duration-150 hover:scale-105" @click="fbwd"><Backward className="fill-slate-950 w-6 h-6 dark:fill-white" /></button>
+		<button class="cursor-pointer text-white text-sm font-semibold rounded-full px-3 py-2 duration-150 hover:scale-105" @click="fbwd"><Backward className="fill-white" /></button>
 		<section v-for="(item, index) in viewport" :key="group_id + '-' + index + '-' + offset" class="flex-1 text-center -space-y-1">
 			<h2 class="text-xl font-bold">{{ weekdays[index + offset] }}</h2>
 			<p v-if="!isSameWeek(sectionDate(index))" class="text-sm font-semibold opacity-50">{{ sectionDate(index).getFullYear() == 2026 ? toFormatJJMoisAAAA(sectionDate(index)).full : toFormatJJMoisAAAA(sectionDate(index)).month  }}</p>
 		</section>
-		<button class="text-white text-sm font-semibold rounded-full px-3 py-2 duration-150 hover:scale-105" @click="ffwd"><Forward className="fill-slate-950 w-6 h-6 dark:fill-white" /></button>
+		<button class="cursor-pointer text-white text-sm font-semibold rounded-full px-3 py-2 duration-150 hover:scale-105" @click="ffwd"><Forward className="fill-white" /></button>
 	</header>
 	<main class="flex px-4 pb-4 gap-2 md:px-8 md:pb-8">
 		<section class="sm:w-12"></section>
