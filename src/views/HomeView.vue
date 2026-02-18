@@ -96,7 +96,7 @@
 		}
 	}
 
-	async function bwd() {
+	async function bwd(loadOnFinish: boolean = true) {
 		offset.value -= 1
 
 		if (offset.value < 0) {
