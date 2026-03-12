@@ -181,7 +181,7 @@
         "description": "Apprenez à organiser, planifier et piloter efficacement un projet numérique en équipe."
     },
     "R214": {
-        "title": "Économie & Droit",
+        "title": "Économie et Droit",
         "emoji": "⚖️",
         "short": "Économie & Droit",
         "description": "Découvrez les bases juridiques, économiques et contractuelles du secteur numérique."
@@ -201,13 +201,19 @@
     "R217": {
         "title": "Projet Personnel Professionnel",
         "emoji": "🎯",
-        "short": "Projet Perso. Pro.",
+        "short": "PPP",
         "description": "Identifiez vos objectifs professionnels et construisez progressivement votre projet de formation et portfolio."
+    },
+    "R218": {
+        "title": "Économie et Droit du Numérique",
+        "emoji": "⚖️",
+        "short": "Économie & Droit",
+        "description": "Découvrez les bases juridiques, économiques et contractuelles du secteur numérique."
     },
     "R219": {
         "title": "Projet Personnel Professionnel",
         "emoji": "🎯",
-        "short": "Projet Perso. Pro.",
+        "short": "PPP",
         "description": "Identifiez vos objectifs professionnels et construisez progressivement votre projet de formation et portfolio."
     },
 
