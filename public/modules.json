@@ -175,16 +175,16 @@
         "description": "Intégrez des maquettes en pages web fidèles, accessibles et compatibles avec les standards du Web."
     },
     "R213": {
-        "title": "Gestion de Projet",
+        "title": "Développement Web",
         "emoji": "📋",
-        "short": "Gestion de Projet",
-        "description": "Apprenez à organiser, planifier et piloter efficacement un projet numérique en équipe."
+        "short": "Développement Web",
+        "description": "Bases de données, SQL, PHP."
     },
     "R214": {
         "title": "Systèmes d'Information",
         "emoji": "🌐",
         "short": "Systèmes d'Information",
-        "description": "euh tkt"
+        "description": "Bases de données, SQL, algorithmique."
     },
     "R215": {
         "title": "Hébergement",
